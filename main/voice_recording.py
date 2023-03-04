@@ -1,7 +1,7 @@
 import discord
 import time
 from main import bot
-
+import asyncio
 
 async def start_record(ctx):
     ctx.voice_client.start_recording(discord.sinks.MP3Sink(), finished_callback, ctx) # Start the recording
@@ -22,8 +22,9 @@ async def stop_recording(ctx):
     await ctx.respond("Stopped!")
 
 
-@bot.command(aliases=['rec'])
+@bot.slash_command(name='record', description='Manually records audio', guild_ids=[872819304754724884])
 async def manual_record(ctx):
+    await ctx.defer()
     await start_record(ctx)
-    time.sleep(5)
-    await start_record(ctx)
+    asyncio.sleep(5)
+    await stop_recording(ctx)

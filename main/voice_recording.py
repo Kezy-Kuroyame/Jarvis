@@ -1,5 +1,6 @@
 import discord
 import time
+from main import bot
 
 
 async def start_record(ctx):

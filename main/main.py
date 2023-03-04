@@ -2,13 +2,26 @@ import discord
 from cfg import discord_cfg
 from discord.ext import commands
 from discord.utils import get
+from discord.ext.commands import Bot
+import asyncio
 
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.message_content = True
-client = discord.Client(intents=intents)
+# intents.message_content = True
+# intents.presences = True
+# intents.members = True
 
-bot = commands.Bot(command_prefix='^', intents=intents)
+bot = commands.Bot(
+    command_prefix="?",
+    intents=intents
+)
+
+
+@bot.command()
+async def add(ctx, left: int, right: int):
+    """Adds two numbers together."""
+    await ctx.send(left + right)
 
 
 @bot.event
@@ -16,26 +29,21 @@ async def on_ready():
     print(f"Бот {bot.user} запущен")
     print("---------------")
 
-
-# @client.event()
-# async def hello(ctx):
-
-
 @bot.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == bot.user:
         return
 
     if message.content.startswith('hello'):
         await message.channel.send('Hello!')
 
 
-@bot.command(pass_context=True)
-async def join(ctx, member: discord.Member):
+@bot.command()
+async def join(ctx):
     print("d")
     channel = ctx.message.author.voice.channel
     print(channel)
-    voice = get(client.voice_clients, guild=ctx.guild)
+    voice = get(bot.voice_clients, guild=ctx.guild)
 
     if voice and voice.is_connected():
         return await ctx.voice_client.move_to(channel)

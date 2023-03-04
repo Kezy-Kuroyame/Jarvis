@@ -1,7 +1,9 @@
 import discord
-import asyncio
 import os
 from speech_recognition import recognition
+from pydub import AudioSegment
+import io
+
 
 async def start_record(ctx):
     ctx.voice_client.start_recording(discord.sinks.WaveSink(), finished_callback, ctx) # Start the recording
@@ -16,11 +18,8 @@ async def finished_callback(sink, ctx):
     files = [discord.File(audio.file, f"{user_id}.{sink.encoding}") for user_id, audio in sink.audio_data.items()]
     await ctx.channel.send(f"Finished! Recorded audio for {', '.join(recorded_users)}.", files=files)
     for user_id, audio in sink.audio_data.items():
-        with open("{user_id}.wav", "wb") as f:
-            f.write(audio.file.getbuffer())
-            recognized_text = await recognition(f)
-            await ctx.channel.send(recognized_text)
-        os.remove(f"{user_id}.wav")
+        recognized_text = await recognition(audio.file.getvalue())
+        await ctx.channel.send(recognized_text)
 
 
 async def stop_recording(ctx):

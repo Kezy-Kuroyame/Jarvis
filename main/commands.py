@@ -9,10 +9,6 @@ from voice_recording import start_record, stop_recording
 
 
 intents = discord.Intents.all()
-intents.message_content = True
-# intents.message_content = True
-# intents.presences = True
-# intents.members = True
 
 bot = commands.Bot(
     command_prefix="/",

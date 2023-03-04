@@ -1,5 +1,4 @@
-from speechkit import Session
-from speechkit import ShortAudioRecognition
+from speechkit import Session, ShortAudioRecognition
 
 
 oauth_token = 'y0_AgAAAAAfq-BCAATuwQAAAADdsREaEr0PDjebRducWEdLlXWIST7IlnM'
@@ -9,4 +8,4 @@ recognizeShortAudio = ShortAudioRecognition(oauth_session)
 
 
 async def recognition(audio):
-    recognized_text = recognizeShortAudio.recognize(audio, format='lpcm', sampleRateHertz='48000')
+    return recognizeShortAudio.recognize(audio, format='lpcm', sampleRateHertz='48000')

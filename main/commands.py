@@ -51,7 +51,7 @@ async def on_message(message):
 @bot.slash_command(name="join",  guild_ids=[872819304754724884])
 async def join(ctx):
     print("d")
-    channel = ctx.author
+    channel = ctx.author.voice.channel
     print(channel)
     voice = get(bot.voice_clients, guild=ctx.guild)
 
@@ -59,7 +59,7 @@ async def join(ctx):
         return await ctx.voice_client.move_to(channel)
 
     else:
-        voice = await channel.connect(reconnect=True, timeout=None)
+        await channel.connect()
 
 
 bot.run(f"{discord_cfg.token}")

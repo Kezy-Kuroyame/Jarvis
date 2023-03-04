@@ -26,11 +26,12 @@ async def on_message(message):
 
 
 @bot.command()
-async def join(ctx, member: discord.Member, channel: discord.VoiceChannel):
+async def join(ctx, member: discord.Member):
+    channel = ctx.message.author.voice.channel
     if ctx.voice_client is not None:
         return await ctx.voice_client.move_to(channel)
-
-    await channel.connect()
+    print(channel)
+    await channel.connect(reconnect=True, timeout=None)
 
 
 client.run(f"{discord_cfg.token}")

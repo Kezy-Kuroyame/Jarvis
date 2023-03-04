@@ -1,3 +1,4 @@
+import speechkit
 import discord
 from cfg import discord_cfg
 from discord.ext import commands

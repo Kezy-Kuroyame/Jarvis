@@ -13,15 +13,16 @@ intents.message_content = True
 # intents.members = True
 
 bot = commands.Bot(
-    command_prefix="?",
+    command_prefix="/",
     intents=intents
 )
 
 
-@bot.command()
-async def add(ctx, left: int, right: int):
+@bot.slash_command(name='hehe', guild_ids=[872819304754724884])
+async def hello(ctx):
+    await ctx.delete()
     """Adds two numbers together."""
-    await ctx.send(left + right)
+    await ctx.send("Пососи")
 
 
 @bot.event

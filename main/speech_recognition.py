@@ -9,4 +9,4 @@ recognizeShortAudio = ShortAudioRecognition(oauth_session)
 
 
 async def recognition(audio):
-    recognized_text = recognizeShortAudio.recognize(audio)
+    recognized_text = recognizeShortAudio.recognize(audio, format='lpcm', sampleRateHertz='48000')

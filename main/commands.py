@@ -24,7 +24,7 @@ bot = commands.Bot(
 async def manual_record(ctx):
     await ctx.defer()
     await start_record(ctx)
-    await asyncio.sleep(5)
+    await asyncio.sleep(4)
     await stop_recording(ctx)
 
 

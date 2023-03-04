@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord.utils import get
 from discord.ext.commands import Bot
 import asyncio
-from voice_recording import manual_record
+import voice_recording
 
 
 intents = discord.Intents.all()
@@ -17,6 +17,14 @@ bot = commands.Bot(
     command_prefix="/",
     intents=intents
 )
+
+
+@bot.slash_command(name='record', description='Manually records audio', guild_ids=[872819304754724884])
+async def manual_record(ctx):
+    await ctx.defer()
+    await start_record(ctx)
+    asyncio.sleep(5)
+    await stop_recording(ctx)
 
 
 @bot.slash_command(name='hehe', guild_ids=[872819304754724884])

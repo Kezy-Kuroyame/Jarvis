@@ -20,11 +20,11 @@ bot = commands.Bot(
 
 
 @bot.slash_command(name='record', description='Manually records audio', guild_ids=[872819304754724884])
-# async def manual_record(ctx):
-#     await ctx.defer()
-#     await start_record(ctx)
-#     asyncio.sleep(5)
-#     await stop_recording(ctx)
+async def manual_record(ctx):
+    await ctx.defer()
+    await start_record(ctx)
+    asyncio.sleep(5)
+    await stop_recording(ctx)
 
 
 @bot.slash_command(name='hehe', guild_ids=[872819304754724884])

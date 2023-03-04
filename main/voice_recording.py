@@ -16,7 +16,7 @@ async def finished_callback(sink, ctx):
     await ctx.channel.send(f"Finished! Recorded audio for {', '.join(recorded_users)}.", files=files)
     for user_id, audio in sink.audio_data.items():
         with open(f"{user_id}.{sink.encoding}", 'wb') as f:
-            f.write(audio.file)
+            f.write(audio.file.getvalue())
             recognized_text = await recognition(f)
             await ctx.channel.send(recognized_text)
 

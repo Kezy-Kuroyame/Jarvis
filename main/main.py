@@ -7,7 +7,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-bot = commands.Bot(command_prefix='j/', intents=intents)
+bot = commands.Bot(command_prefix='//', intents=intents)
 
 
 @client.event
@@ -24,10 +24,13 @@ async def on_message(message):
     if message.content.startswith('hello'):
         await message.channel.send('Hello!')
 
-print("хуй")
-@bot.command()
-async def join(ctx, member: discord.Member):
 
+@bot.command()
+async def join(ctx, member: discord.Member, channel: discord.VoiceChannel):
+    if ctx.voice_client is not None:
+        return await ctx.voice_client.move_to(channel)
+
+    await channel.connect()
 
 
 client.run(f"{discord_cfg.token}")

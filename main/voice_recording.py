@@ -1,5 +1,6 @@
 import discord
 import asyncio
+import os
 from speech_recognition import recognition
 
 async def start_record(ctx):
@@ -19,6 +20,7 @@ async def finished_callback(sink, ctx):
             f.write(audio.file.getvalue())
             recognized_text = await recognition(f)
             await ctx.channel.send(recognized_text)
+            os.remove(f"{user_id}.{sink.encoding}")
 
 
 async def stop_recording(ctx):

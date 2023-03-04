@@ -19,11 +19,3 @@ async def finished_callback(sink, ctx):
 async def stop_recording(ctx):
     ctx.voice_client.stop_recording() # Stop the recording, finished_callback will shortly after be called
     await ctx.respond("Stopped!")
-
-
-@bot.slash_command(name='record', description='Manually records audio', guild_ids=[872819304754724884])
-async def manual_record(ctx):
-    await ctx.defer()
-    await start_record(ctx)
-    asyncio.sleep(5)
-    await stop_recording(ctx)

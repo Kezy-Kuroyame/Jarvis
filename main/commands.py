@@ -23,7 +23,7 @@ bot = commands.Bot(
 async def manual_record(ctx):
     await ctx.defer()
     await start_record(ctx)
-    asyncio.sleep(5)
+    await asyncio.sleep(5)
     await stop_recording(ctx)
 
 
@@ -52,6 +52,7 @@ async def on_message(message):
 async def join(ctx):
     print("d")
     channel = ctx.author.voice.channel
+    await ctx.delete()
     print(channel)
     voice = get(bot.voice_clients, guild=ctx.guild)
 

@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord.utils import get
 from discord.ext.commands import Bot
 import asyncio
-# import voice_recording
+import voice_recording
 
 
 intents = discord.Intents.all()

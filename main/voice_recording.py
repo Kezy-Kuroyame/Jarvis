@@ -1,6 +1,6 @@
 import discord
 import asyncio
-from speech_recognition import recognizeShortAudio
+from speech_recognition import recognition
 
 async def start_record(ctx):
     ctx.voice_client.start_recording(discord.sinks.WaveSink(), finished_callback, ctx) # Start the recording
@@ -15,7 +15,7 @@ async def finished_callback(sink, ctx):
     files = [discord.File(audio.file, f"{user_id}.{sink.encoding}") for user_id, audio in sink.audio_data.items()]
     await ctx.channel.send(f"Finished! Recorded audio for {', '.join(recorded_users)}.", files=files)
     for user_id, audio in sink.audio_data.items():
-        await ctx.channel.send(recognizeShortAudio(audio.file))
+        await ctx.channel.send(recognition(audio.file))
 
 
 async def stop_recording(ctx):

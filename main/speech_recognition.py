@@ -1,4 +1,4 @@
-import speechkit
+from speechkit import ShortAudioRecognition
 
 recognizeShortAudio = ShortAudioRecognition(session)
 

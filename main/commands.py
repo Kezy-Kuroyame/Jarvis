@@ -5,10 +5,16 @@ from discord.ext import commands
 from discord.utils import get
 from discord.ext.commands import Bot
 import asyncio
+
+from main.music import Music
 from voice_recording import start_record, stop_recording
 
 
 intents = discord.Intents.all()
+intents.message_content = True
+# intents.message_content = True
+# intents.presences = True
+# intents.members = True
 
 bot = commands.Bot(
     command_prefix="/",
@@ -58,6 +64,13 @@ async def join(ctx):
 
     else:
         await channel.connect()
+
+
+@bot.slash_command(name="play", guild_ids=[872819304754724884])
+async def play(ctx):
+    music = Music(bot)
+    await join(ctx)
+    await music.play(ctx)
 
 
 bot.run(f"{discord_cfg.token}")

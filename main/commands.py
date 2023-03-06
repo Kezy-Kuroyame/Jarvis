@@ -3,12 +3,12 @@ import discord
 from cfg import discord_cfg
 from discord.ext import commands
 from discord.utils import get
-from discord.ext.commands import Bot
+from discord import Option
 import asyncio
+
 
 from main.music import Music
 from voice_recording import start_record, stop_recording
-
 
 intents = discord.Intents.all()
 intents.message_content = True
@@ -42,6 +42,8 @@ async def on_ready():
     print(f"Бот {bot.user} запущен")
     print("---------------")
 
+
+
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -51,9 +53,8 @@ async def on_message(message):
         await message.channel.send('Hello!')
 
 
-@bot.slash_command(name="join",  guild_ids=[872819304754724884])
+@bot.slash_command(name="join", guild_ids=[872819304754724884])
 async def join(ctx):
-    print("d")
     channel = ctx.author.voice.channel
     await ctx.delete()
     print(channel)
@@ -61,16 +62,16 @@ async def join(ctx):
 
     if voice and voice.is_connected():
         return await ctx.voice_client.move_to(channel)
-
     else:
+
         await channel.connect()
 
 
 @bot.slash_command(name="play", guild_ids=[872819304754724884])
-async def play(ctx):
+async def play(ctx, query: Option(str, description="Название песни", required=True)):
     music = Music(bot)
     await join(ctx)
-    await music.play(ctx)
+    await music.play(ctx, query)
 
 
 bot.run(f"{discord_cfg.token}")

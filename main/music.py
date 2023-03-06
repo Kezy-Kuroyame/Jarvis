@@ -1,4 +1,6 @@
+import asyncio
 import os
+
 import requests
 from bs4 import BeautifulSoup
 from yandex_music import Client
@@ -11,21 +13,34 @@ import discord
 
 
 class Music:
-    songs = []
-
     def __init__(self, bot):
         self.bot = bot
         self.client = Client(f'{discord_cfg.yandex_music_token}').init()
-        self.client.users_likes_tracks()[0].fetch_track().download('example.mp3')
+        self.songs = []
 
-    async def player(self, voice_client):
-        ffmpeg_options = {
-            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+    def searching(self, *query):
+        search_result = self.client.search(query).best.result
+        try:
+            search_result.download("tmp/song.mp3", bitrate_in_kbps=320)
 
-        # song = discord.AudioSource.read('example.mp3')
-        voice_client.play(discord.FFmpegPCMAudio(source="https://music.yandex.ru/album/14688437/track/80282466"))
+        except:
+            print("Error downloading")
 
-    async def play(self, ctx):
-        voice_client = get(self.bot.voice_clients, guild=ctx.guild)
-        self.client.users_likes_tracks()[0].fetch_track().download('example.mp3')
-        await self.player(voice_client)
+    async def player(self, ctx):
+        voice_client = ctx.voice_client
+        self.searching(self.songs[0])
+        i = 0
+        while i < len(self.songs):
+            try:
+                voice_client.play(discord.FFmpegPCMAudio('tmp/song.mp3'),
+                                  after=lambda e: print('Player error: %s' % e) if e else None)
+            except:
+                pass
+            else:
+                self.searching(self.songs[i])
+                i += 1
+
+    async def play(self, ctx, *query: str):
+        self.songs.append(query)
+        if len(self.songs) == 1:
+            await self.player(ctx)

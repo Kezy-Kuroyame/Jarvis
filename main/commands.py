@@ -6,7 +6,6 @@ from discord.utils import get
 from discord import Option
 import asyncio
 
-
 from main.music import Music
 from voice_recording import start_record, stop_recording
 
@@ -44,7 +43,6 @@ async def on_ready():
     print("---------------")
 
 
-
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -74,5 +72,14 @@ async def play(ctx, query: Option(str, description="Название песни"
 
     await music.play(ctx, query)
 
+
+@bot.slash_command(name="stop", guild_ids=[872819304754724884])
+async def stop(ctx):
+    await music.stop(ctx)
+
+
+@bot.slash_command(name="skip", guild_ids=[872819304754724884])
+async def skip(ctx):
+    await music.skip(ctx)
 
 bot.run(f"{discord_cfg.token}")

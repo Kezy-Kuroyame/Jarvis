@@ -45,6 +45,29 @@ class Music:
     async def clear_queue(self):
         self.songs.clear()
 
+    async def skip(self, ctx):
+        voice_client = ctx.voice_client
+        if voice_client and voice_client.is_connected():
+            if self.songs:
+                self.songs.pop(0)
+                await self.player(ctx)
+            else:
+                await ctx.channel.send("У вас нет песен в очереди")
+        else:
+            await ctx.channel.send("Я не подключен к голосовому каналу")
+
     async def stop(self, ctx):
         voice_client = ctx.voice_client
+        if voice_client and voice_client.is_connected():
+            if voice_client.is_playing():
+                print("Pause")
+                voice_client.stop()
+                await ctx.channel.send("Воспроизведение музыки остановлено")
+            else:
+                print("Error stopping: Бот и так ничего не воспроизводит")
+        else:
+            print("Error stopping: Бот не находиться в голосовом канале")
+            await ctx.channel.send("Ошибка: У вас ничего не играет")
+
+
 

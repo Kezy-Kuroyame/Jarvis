@@ -52,22 +52,23 @@ class Music:
                 self.songs.pop(0)
                 await self.player(ctx)
             else:
-                await ctx.channel.send("У вас нет песен в очереди")
+                await ctx.respond("У вас нет песен в очереди")
         else:
-            await ctx.channel.send("Я не подключен к голосовому каналу")
+            await ctx.respond("Я не подключен к голосовому каналу")
 
     async def stop(self, ctx):
         voice_client = ctx.voice_client
         if voice_client and voice_client.is_connected():
             if voice_client.is_playing():
-                print("Pause")
+                print("Stopping..")
                 voice_client.stop()
-                await ctx.channel.send("Воспроизведение музыки остановлено")
+                await self.clear_queue()
+                await ctx.respond("Воспроизведение музыки остановлено")
             else:
                 print("Error stopping: Бот и так ничего не воспроизводит")
         else:
             print("Error stopping: Бот не находиться в голосовом канале")
-            await ctx.channel.send("Ошибка: У вас ничего не играет")
+            await ctx.respond("Ошибка: У вас ничего не играет")
 
 
 

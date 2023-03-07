@@ -18,29 +18,33 @@ class Music:
         self.client = Client(f'{discord_cfg.yandex_music_token}').init()
         self.songs = []
 
-    def searching(self, *query):
+    async def searching(self, *query):
         search_result = self.client.search(query).best.result
         try:
             search_result.download("tmp/song.mp3", bitrate_in_kbps=320)
-
         except:
             print("Error downloading")
 
     async def player(self, ctx):
         voice_client = ctx.voice_client
-        self.searching(self.songs[0])
-        i = 0
-        while i < len(self.songs):
+        while self.songs:
+            await self.searching(self.songs[0])
             try:
                 voice_client.play(discord.FFmpegPCMAudio('tmp/song.mp3'),
                                   after=lambda e: print('Player error: %s' % e) if e else None)
             except:
                 pass
             else:
-                self.searching(self.songs[i])
-                i += 1
+                self.songs.pop(0)
 
     async def play(self, ctx, *query: str):
         self.songs.append(query)
         if len(self.songs) == 1:
             await self.player(ctx)
+
+    async def clear_queue(self):
+        self.songs.clear()
+
+    async def stop(self, ctx):
+        voice_client = ctx.voice_client
+

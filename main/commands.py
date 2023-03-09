@@ -26,7 +26,7 @@ bot = commands.Bot(
 async def manual_record(ctx):
     await ctx.defer()
     await start_record(ctx)
-    await asyncio.sleep(4)
+    await asyncio.sleep(5)
     await stop_recording(ctx)
 
 
@@ -55,15 +55,18 @@ async def on_message(message):
 
 @bot.slash_command(name="join", guild_ids=[872819304754724884])
 async def join(ctx):
-    channel = ctx.author.voice.channel
+    if ctx.author.voice:
+        channel = ctx.author.voice.channel
+        print(channel)
+    else:
+        await ctx.send(f'{ctx.author.mention}, you are not in a voice channel')
+        return
     await ctx.delete()
-    print(channel)
     voice = get(bot.voice_clients, guild=ctx.guild)
 
     if voice and voice.is_connected():
         return await ctx.voice_client.move_to(channel)
     else:
-
         await channel.connect()
 
 

@@ -1,6 +1,7 @@
 from speechkit import Session, ShortAudioRecognition
 import speech_recognition as sr
 import wave
+import os
 
 
 # Yandex SpeechKit
@@ -14,14 +15,18 @@ import wave
 #     return recognizeShortAudio.recognize(audio, format='lpcm', sampleRateHertz='48000')
 
 
+# Google Web Speech Recognition
 async def recognition(audio):
-    f = wave.open('auido_recognition_sample.wav', 'wb')
-    f.setparams([2, 2, 48000, 0, 'NONE', 'not compressed'])
+    f = wave.open('recognition_sample.wav', 'wb')
+    audio_params = [2, 2, 48000, 0, 'NONE', 'not compressed']
+    f.setparams(audio_params)
     f.writeframesraw(audio)
     f.close()
     r = sr.Recognizer()
-    with sr.WavFile('auido_recognition_sample.wav') as source:
+    with sr.WavFile('recognition_sample.wav') as source:
         audio_file = r.record(source)
-    return r.recognize_google(audio_file, language="ru_RU", show_all=True)['alternative'][0]['transcript']
+    os.remove('recognition_sample.wav')
+    return r.recognize_google(audio_file, show_all=True)['alternative'][0]['transcript']
+
 
 

@@ -13,7 +13,7 @@ async def finished_callback(sink, ctx):
         for user_id, audio in sink.audio_data.items()
     ]
     files = [discord.File(audio.file, f"{user_id}.{sink.encoding}") for user_id, audio in sink.audio_data.items()]
-    await ctx.channel.send(f"Finished! Recorded audio for {', '.join(recorded_users)}.", files=files)
+    # await ctx.channel.send(f"Finished! Recorded audio for {', '.join(recorded_users)}.", files=files)
     for user_id, audio in sink.audio_data.items():
         recognized_text = await recognition(audio.file.getvalue())
         await ctx.channel.send(recognized_text)

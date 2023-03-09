@@ -1,12 +1,9 @@
 import discord
-import os
-from speech_recognition import recognition
-from pydub import AudioSegment
-import io
+from speech_recognizing import recognition
 
 
 async def start_record(ctx):
-    ctx.voice_client.start_recording(discord.sinks.WaveSink(), finished_callback, ctx) # Start the recording
+    ctx.voice_client.start_recording(discord.sinks.WaveSink(), finished_callback, ctx)  # Start the recording
 
 
 async def finished_callback(sink, ctx):
@@ -23,5 +20,5 @@ async def finished_callback(sink, ctx):
 
 
 async def stop_recording(ctx):
-    ctx.voice_client.stop_recording() # Stop the recording, finished_callback will shortly after be called
+    ctx.voice_client.stop_recording()  # Stop the recording, finished_callback will shortly after be called
     await ctx.respond("Stopped!")

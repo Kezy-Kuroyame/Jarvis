@@ -56,7 +56,7 @@ async def on_message(message):
 async def join(ctx):
     channel = ctx.author.voice.channel
     voice_client = ctx.voice_client
-    await ctx.delete()
+    # await ctx.delete()
     print(channel)
 
     if voice_client and voice_client.is_connected():

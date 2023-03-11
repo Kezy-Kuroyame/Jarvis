@@ -22,19 +22,18 @@ class Music:
         search_result = self.client.search(query).best.result
         try:
             search_result.download("tmp/song.mp3", bitrate_in_kbps=320)
+            return search_result
         except:
             print("Error downloading")
 
     async def player(self, ctx):
         voice_client = ctx.voice_client
         while self.songs:
-            await self.searching(self.songs[0])
-            try:
+            if voice_client and not voice_client.is_playing():
+                song = await self.searching(self.songs[0])
                 voice_client.play(discord.FFmpegPCMAudio('tmp/song.mp3'),
-                                  after=lambda e: print('Player error: %s' % e) if e else None)
-            except:
-                pass
-            else:
+                                        after=lambda e: print('Player error: %s' % e) if e else None)
+                await asyncio.sleep(song.duration_ms // 1000)
                 self.songs.pop(0)
 
     async def play(self, ctx, *query: str):
@@ -49,6 +48,7 @@ class Music:
         voice_client = ctx.voice_client
         if voice_client and voice_client.is_connected():
             if self.songs:
+                voice_client.stop()
                 self.songs.pop(0)
                 await self.player(ctx)
             else:
@@ -69,6 +69,3 @@ class Music:
         else:
             print("Error stopping: Бот не находиться в голосовом канале")
             await ctx.respond("Ошибка: У вас ничего не играет")
-
-
-

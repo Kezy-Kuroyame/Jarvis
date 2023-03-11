@@ -7,7 +7,7 @@ from discord import Option
 import asyncio
 
 from main.music import Music
-from voice_recording import start_record, stop_recording
+# from voice_recording import start_record, stop_recording
 
 intents = discord.Intents.all()
 intents.message_content = True
@@ -23,11 +23,11 @@ music = Music(bot)
 
 
 @bot.slash_command(name='record', description='Manually records audio', guild_ids=[872819304754724884])
-async def manual_record(ctx):
-    await ctx.defer()
-    await start_record(ctx)
-    await asyncio.sleep(4)
-    await stop_recording(ctx)
+# # async def manual_record(ctx):
+#     await ctx.defer()
+#     await start_record(ctx)
+#     await asyncio.sleep(4)
+#     await stop_recording(ctx)
 
 
 @bot.slash_command(name='hehe', guild_ids=[872819304754724884])
